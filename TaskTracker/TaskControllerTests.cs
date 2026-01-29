@@ -39,8 +39,7 @@ public class TasksControllerTests
         // Arrange
         var context = GetDbContext();
         var controller = new TasksController(context);
-        var invalidTask = new ToDoTasks { Title = "" }; // Empty title triggers your backend check
-
+        var invalidTask = new ToDoTasks { Title = "" }; 
         // Act
         var result = await controller.Create(invalidTask);
 
