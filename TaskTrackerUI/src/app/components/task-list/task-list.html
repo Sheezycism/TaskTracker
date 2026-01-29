@@ -15,7 +15,7 @@
             <span class="input-group-text bg-white border-end-0">🔍</span>
             <input type="text" class="form-control border-start-0" 
                    placeholder="Filter by title or description..." 
-                   [(ngModel)]="searchQuery" (input)="loadTasks()">
+                   [(ngModel)]="searchQuery" ((change))="loadTasks()">
           </div>
         </div>
         <div class="col-md-5">
@@ -27,10 +27,10 @@
         </div>
       </div>
 
-      <div *ngIf="loading" class="text-center my-5">
+   <!--    <div *ngIf="loading" class="text-center my-5">
         <div class="spinner-border text-primary" role="status"></div>
         <p class="mt-2 text-muted">Loading tasks...</p>
-      </div>
+      </div> -->
 
       <div *ngIf="error" class="alert alert-danger" role="alert">
         {{ error }}

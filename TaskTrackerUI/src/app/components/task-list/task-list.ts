@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ToDoTask } from '../../models/tasks';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,21 +18,26 @@ export class TaskListComponent implements OnInit {
   error = '';
   searchQuery = '';
   sortOrder = 'duedate:asc';
-
+  private cdr = inject(ChangeDetectorRef);
   constructor(private taskService: TaskService) {}
 
   ngOnInit(): void { this.loadTasks(); }
 
   loadTasks() {
-    this.loading = true;
-    this.taskService.getTasks(this.searchQuery, this.sortOrder).subscribe({
-      next: (data) => { this.tasks = data; this.loading = false; },
-      error: (err) => { 
-        this.error = err.error?.detail || 'Failed to load tasks.';
-        this.loading = false; 
-      }
-    });
-  }
+  this.loading = true;
+  this.taskService.getTasks(this.searchQuery, this.sortOrder).subscribe({
+    next: (res) => { 
+      this.tasks = res; 
+      this.loading = false; 
+      this.cdr.detectChanges(); // 3. Manually trigger UI update
+    },
+    error: (err) => { 
+      this.error = err.message;
+      this.loading = false; 
+      this.cdr.detectChanges(); 
+    }
+  });
+}
 
   onDelete(id: number) {
     if (confirm('Are you sure?')) {
